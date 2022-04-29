@@ -21,5 +21,11 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ListaAvisosActivity.class);
             startActivity(intent);
         });
+
+        button = findViewById(R.id.botaoMensagem);
+        button.setOnClickListener(v-> {
+            Intent intent = new Intent(this, MensagensActivity.class);
+            startActivity(intent);
+        });
     }
 }

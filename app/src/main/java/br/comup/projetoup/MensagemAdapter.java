@@ -18,44 +18,36 @@ public class MensagemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.mensagens = listaMensagens;
     }
 
-    @NonNull
-    // Cria uma instância do item_aviso.xml para ser o template da nossa lista.
-    public MensagemEnviadaViewHolder onCreateViewHolderEnviada(@NonNull ViewGroup parent, int viewType) {
-
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-
-        View layoutEnviada = layoutInflater.inflate(R.layout.item_enviada, parent, false);
-        MensagemEnviadaViewHolder mensagemEnviadaViewHolder = new MensagemEnviadaViewHolder(layoutEnviada);
-        return mensagemEnviadaViewHolder;
-    }
-
-    public MensagemRecebidaViewHolder onCreateViewHolderRecebida(@NonNull ViewGroup parent, int viewType) {
-
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-
-        View layoutRecebida = layoutInflater.inflate(R.layout.item_recebida, parent, false);
-        MensagemRecebidaViewHolder mensagemRecebidaViewHolder = new MensagemRecebidaViewHolder(layoutRecebida);
-        return mensagemRecebidaViewHolder;
-    }
-
-    // Pega cada item da lista instanciada e seta os valores no xml de acordo com o item da lista
-    public void onBindViewHolder(@NonNull MensagemEnviadaViewHolder holder, int position) {
-
-        Mensagem descricao = mensagens.get(position);
-
-        TextView txtDescricao = holder.itemView.findViewById(R.id.mensagem_enviada);
-
-        txtDescricao.setText(descricao.getDescricao());
+    @Override
+    public int getItemViewType(int position) {
+        if(mensagens.get(position).getStatus() == 1) return R.layout.item_enviada;
+        return R.layout.item_recebida;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View layout;
+
+        if(viewType == R.layout.item_enviada) {
+            layout = layoutInflater.inflate(R.layout.item_enviada, parent, false);
+            return new MensagemEnviadaViewHolder(layout);
+        }
+
+        layout = layoutInflater.inflate(R.layout.item_recebida, parent, false);
+        return new MensagemRecebidaViewHolder(layout);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if(holder.getItemViewType() == R.layout.item_enviada){
+            MensagemEnviadaViewHolder enviadaViewHolder = (MensagemEnviadaViewHolder) holder;
+            enviadaViewHolder.txtMensagem.setText(mensagens.get(position).getDescricao());
+        } else {
+            MensagemRecebidaViewHolder recebidaViewHolder = (MensagemRecebidaViewHolder) holder;
+            recebidaViewHolder.txtMensagem.setText(mensagens.get(position).getDescricao());
+        }
 
     }
 
@@ -65,14 +57,18 @@ public class MensagemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public class MensagemEnviadaViewHolder extends RecyclerView.ViewHolder {
+        TextView txtMensagem;
         public MensagemEnviadaViewHolder(@NonNull View itemView) {
             super(itemView);
+            txtMensagem = itemView.findViewById(R.id.mensagem_enviada);
         }
     }
 
     public class MensagemRecebidaViewHolder extends RecyclerView.ViewHolder {
+        TextView txtMensagem;
         public MensagemRecebidaViewHolder(@NonNull View itemView) {
             super(itemView);
+            txtMensagem = itemView.findViewById(R.id.mensagem_recebida);
         }
     }
 

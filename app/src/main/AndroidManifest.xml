@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjetoUP">
         <activity
+            android:name=".MensagensActivity"
+            android:exported="false" />
+        <activity
             android:name=".ListaAvisosActivity"
             android:exported="false" />
         <activity
